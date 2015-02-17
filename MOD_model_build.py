@@ -4,7 +4,7 @@ import sys
 
 from modeller import *
 from modeller.automodel import *
-#from modeller import soap_protein_od
+from modeller import soap_protein_od
 
 env = environ()
 log.verbose()
@@ -13,10 +13,10 @@ log.verbose()
 # Read in HETATM records from template PDBs
 #env.io.hetatm = True
 
-a = automodel(env, alnfile='CYP2J2_pir_1PO5.ali',
-              knowns='1PO5', sequence='P51589',
+a = automodel(env, alnfile='CYP2J2_pir_1suo.ali',
+              knowns='1suo', sequence='P51589',
               assess_methods=(assess.DOPE,
-                              #soap_protein_od.Scorer(),
+                              soap_protein_od.Scorer(),
                               assess.GA341))
 a.starting_model = 1
 a.ending_model = 1

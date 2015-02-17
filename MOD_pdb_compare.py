@@ -83,7 +83,7 @@ def main():
 
     pdb_list = {}
     for arg in file_input:
-        # Lower case, remove .pdb if appended
+        # Cut into PDB id and Chain id
         pdb_id = arg.lower()[:4]
         chain_id = arg.upper()[4:]
         pdb_list[pdb_id] = chain_id

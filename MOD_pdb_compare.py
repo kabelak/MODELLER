@@ -49,8 +49,8 @@ def pdbDownload(file_list,hostname=HOSTNAME,directory=DIRECTORY,prefix=PREFIX,
             print "%s exists and will not be re-downloaded" % to_write[i][:to_write[i].index(".")]
             pass
 
-        else:
         # If file absent, proceed with downloading and extraction
+        else:
             try:
                 ftp.retrbinary("RETR %s" % to_get[i],open(to_write[i],"wb").write)
                 final_name = "%s.pdb" % to_write[i][:to_write[i].index(".")]
@@ -94,14 +94,16 @@ def main():
     # Compare models
     env = environ()
     aln = alignment(env)
+    env.io.atom_files_directory = ['./pdbfiles']
     for pdb in pdb_list.keys():
-        m = model(env, file=str('./pdbfiles/' + pdb), model_segment=('FIRST:'+pdb_list[pdb], 'LAST:'+pdb_list[pdb]))
-        aln.append_model(m, atom_files=str('./pdbfiles/' + pdb), align_codes=pdb)
+        m = model(env, file=pdb, model_segment=('FIRST:' + pdb_list[pdb], 'LAST:' + pdb_list[pdb]))
+        aln.append_model(m, atom_files=pdb, align_codes=pdb)
     aln.malign()
     aln.malign3d()
     aln.compare_structures()
     aln.id_table(matrix_file='newfamily.mat')
     env.dendrogram(matrix_file='newfamily.mat', cluster_cut=-1.0)
+
 
 if __name__ == "__main__":
     main()

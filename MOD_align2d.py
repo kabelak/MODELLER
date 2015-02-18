@@ -9,18 +9,19 @@ def ModAlign2D(align,pdb):
     # chosen structure file (pdb)
     env = environ()
     aln = alignment(env)
+    env.io.atom_files_directory = './pdbfiles'
     fname = re.search('/?(\w*)\.(\w*)$', align)
-    pname = re.search('/?(\w*)\.(\w*)$', pdb)
+    # pname = re.search('/?(\w*)\.(\w*)$', pdb)
 
     mdl = model(env, file=pdb, model_segment=('FIRST:A','LAST:A'))
-    aln.append_model(mdl, align_codes=pname.group(1), atom_files=pdb)
+    aln.append_model(mdl, align_codes=pdb, atom_files=pdb)
     aln.append(file=align, align_codes='P51589')
     aln.align2d()
 
-    outname = str(fname.group(1)+'_'+pname.group(1))
+    outname = str(fname.group(1) + '_' + pdb)
 
-    aln.write(file=str(outname+'.ali'), alignment_format='PIR')
-    aln.write(file=str(outname+'.pap'), alignment_format='PAP')
+    aln.write(file=str(outname + '_2.ali'), alignment_format='PIR')
+    aln.write(file=str(outname + '_2.pap'), alignment_format='PAP')
 
 def main(align,pdb):
     ModAlign2D(align, pdb)

@@ -15,7 +15,7 @@ def ModSalign(pdblist):
     outname = 'salign_'+("_".join("%s%s" % (key,pdblist[key]) for key in pdblist.keys()))
 
     env = environ()
-    env.io.atom_files_directory = './pdbfiles'
+    env.io.atom_files_directory = ['./pdbfiles']
 
     aln = alignment(env)
     for pdb in pdblist.keys():

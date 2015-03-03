@@ -5,6 +5,7 @@ __usage__ = 'python MOD_salign.py pdb+chains; Ensure the script is modified with
 import sys
 from modeller import *
 from modeller.automodel import *
+from modeller import soap_protein_od
 
 
 log.verbose()
@@ -89,7 +90,10 @@ def ModModelCreate(salign_multf, pdblist):
     # for both sequence and structure
     #env.io.hetatm = True
     a = automodel(env, alnfile=salign_multf,
-                  knowns=pdblist, sequence='P51589')
+                  knowns=pdblist, sequence='P51589',
+                  assess_methods=(assess.DOPE,
+                                  soap_protein_od.Scorer(),
+                                  assess.GA341))
     a.starting_model = 1
     a.ending_model = 5
     a.make()
@@ -106,7 +110,7 @@ def main():
     pdb_dict = {}
     pdb_list = ()
     for arg in file_input:
-        # Cut into PDB id and Chain id
+        # Split into PDB id and Chain id
         pdb_id = arg.lower()[:4]
         chain_id = arg.upper()[4:]
         pdb_dict[pdb_id] = chain_id
@@ -117,6 +121,8 @@ def main():
 
     # Align PDB alignment with sequence (in PIR format)
     full_align = ModSalignMult(pdb_align)
+
+    raw_input("Check the alignment file %s and press any key to continue to modelling step" % full_align)
 
     # Create models based on ModSalignMult alignment
     ModModelCreate(full_align, pdb_list)

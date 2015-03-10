@@ -6,6 +6,7 @@ import sys
 from modeller import *
 from modeller.automodel import *
 from modeller import soap_protein_od
+from MOD_pdb_compare import pdbDownload
 
 
 log.verbose()
@@ -65,7 +66,7 @@ def ModSalignMult(salignf):
     aln_block = len(aln)
 
     # Read aligned sequence(s):
-    aln.append(file='../Sequences/CYP2J2_pir.txt', align_codes='P51589')
+    aln.append(file='../Sequences/CYP2J2_pir_copy.txt', align_codes='CYP2J2')
 
     # Structure sensitive variable gap penalty sequence-sequence alignment:
     aln.salign(output='', max_gap_length=20,
@@ -90,7 +91,7 @@ def ModModelCreate(salign_multf, pdblist):
     # for both sequence and structure
     #env.io.hetatm = True
     a = automodel(env, alnfile=salign_multf,
-                  knowns=pdblist, sequence='P51589',
+                  knowns=pdblist, sequence='CYP2J2',
                   assess_methods=(assess.DOPE,
                                   soap_protein_od.Scorer(),
                                   assess.GA341))
@@ -115,6 +116,11 @@ def main():
         chain_id = arg.upper()[4:]
         pdb_dict[pdb_id] = chain_id
         pdb_list += (arg.lower()[:4]+arg.upper()[4:],)
+
+    # Download the pdbs, if required
+    # print pdb_list
+    pdbDownload(pdb_dict.keys(), hostname="ftp.wwpdb.org", directory="/pub/pdb/data/structures/all/pdb/", prefix="pdb",
+                suffix=".ent.gz")
 
     # Align input PDB files according to selected chains
     pdb_align = ModSalign(pdb_dict)

@@ -15,13 +15,13 @@ def ModAlign2D(align,pdb):
 
     mdl = model(env, file=pdb, model_segment=('FIRST:A','LAST:A'))
     aln.append_model(mdl, align_codes=pdb, atom_files=pdb)
-    aln.append(file=align, align_codes='P51589')
+    aln.append(file=align, align_codes='CYP2J2')
     aln.align2d()
 
     outname = str(fname.group(1) + '_' + pdb)
 
-    aln.write(file=str(outname + '_2.ali'), alignment_format='PIR')
-    aln.write(file=str(outname + '_2.pap'), alignment_format='PAP')
+    aln.write(file=str(outname + '_trim.ali'), alignment_format='PIR')
+    aln.write(file=str(outname + '_trim.pap'), alignment_format='PAP')
 
 def main(align,pdb):
     ModAlign2D(align, pdb)

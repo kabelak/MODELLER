@@ -1,4 +1,6 @@
 __author__ = 'Kavin'
+__usage__ = 'python improp_mod.py <text_file> <excel_file>' \
+            '; it is imperative that the excel file has the 4 character long "old" string in the first column, and the 4 character long "new" string in the second column'
 
 import sys
 import xlrd
@@ -43,8 +45,8 @@ def inplace_change(filename, old_string, new_string):
 '''
 
 
-def main(file):
-    wb = xlrd.open_workbook('improp_rn.xlsx')
+def main(file, xlfile):
+    wb = xlrd.open_workbook(xlfile)
     ws1 = wb.sheet_by_name('Sheet1')
     num_rows = ws1.nrows - 1
     curr_row = - 1
@@ -56,4 +58,4 @@ def main(file):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2])

@@ -1,6 +1,7 @@
 __author__ = 'Kavin'
 __usage__ = 'python improp_mod.py <text_file> <excel_file>' \
-            '; it is imperative that the excel file has the 4 character long "old" string in the first column, and the 4 character long "new" string in the second column'
+            '; it is imperative that the excel file has the 4 character long "old" string in the first column,' \
+            ' and the 4 character long "new" string in the second column; Script will overwrite original file'
 
 import sys
 import xlrd
@@ -17,32 +18,6 @@ def inplace_change(filename, old_string, new_string):
         f.close()
     else:
         print 'No occurances of "{old_string}" found.'.format(**locals())
-
-
-'''
-    wb = xlrd.open_workbook(xlfile)
-    # print wb.sheet_names()
-    ws1 = wb.sheet_by_name('Sheet1')
-    num_rows = ws1.nrows - 1
-    curr_row = - 1
-
-    ws2 = wb.sheet_by_name('plamen')
-    num_rows2 = ws2.nrows - 1
-
-
-
-    atoms = {}
-    atomtype = {}
-    i = 0
-    while curr_row < num_rows:
-        curr_row2 = - 1
-        while curr_row2 < num_rows2:
-            if ws1.cell_value(curr_row, 1) == ws2.cell_value(curr_row2, 0):
-                print(str(ws1.cell_value(curr_row, 1)) + "\t" + str(ws2.cell_value(curr_row2, 1)).upper() + "\t" + str(ws1.cell_value(curr_row, 8)) + "\t" + str(i))
-            curr_row2 += 1
-        curr_row += 1
-        i += 1
-'''
 
 
 def main(file, xlfile):

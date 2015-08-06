@@ -8,16 +8,14 @@ from modeller.automodel import *
 from modeller import soap_protein_od
 from MOD_pdb_compare import pdbDownload
 
-
 log.verbose()
 
-
 def ModSalign(pdblist):
-
     outname = 'salign_'+("_".join("%s%s" % (key,pdblist[key]) for key in pdblist.keys()))
 
     env = environ()
     env.io.atom_files_directory = ['./pdbfiles']
+    env.io.hetatm = True
 
     aln = alignment(env)
     for pdb in pdblist.keys():
@@ -56,9 +54,9 @@ def ModSalign(pdblist):
 
 
 def ModSalignMult(salignf):
-
     env = environ()
     env.libs.topology.read(file='$(LIB)/top_heav.lib')
+    env.io.hetatm = True
 
     # Read aligned structure(s):
     aln = alignment(env)
@@ -66,7 +64,7 @@ def ModSalignMult(salignf):
     aln_block = len(aln)
 
     # Read aligned sequence(s):
-    aln.append(file='../Sequences/CYP2J2_pir_copy.txt', align_codes='CYP2J2')
+    aln.append(file='../Sequences/CYP2J2_pir_trim.txt', align_codes='CYP2J2')
 
     # Structure sensitive variable gap penalty sequence-sequence alignment:
     aln.salign(output='', max_gap_length=20,
@@ -89,14 +87,14 @@ def ModModelCreate(salign_multf, pdblist):
     # Read in HETATM records from template PDBs
     # HETATM needs to be identified by '.' per HETATM (eg: HEM = 1 '.') in .ali file,
     # for both sequence and structure
-    #env.io.hetatm = True
+    env.io.hetatm = True
     a = automodel(env, alnfile=salign_multf,
                   knowns=pdblist, sequence='CYP2J2',
                   assess_methods=(assess.DOPE,
                                   soap_protein_od.Scorer(),
                                   assess.GA341))
     a.starting_model = 1
-    a.ending_model = 5
+    a.ending_model = 10
     a.make()
 
 
@@ -124,6 +122,7 @@ def main():
 
     # Align input PDB files according to selected chains
     pdb_align = ModSalign(pdb_dict)
+    # raw_input("MODSalign")
 
     # Align PDB alignment with sequence (in PIR format)
     full_align = ModSalignMult(pdb_align)
@@ -132,9 +131,6 @@ def main():
 
     # Create models based on ModSalignMult alignment
     ModModelCreate(full_align, pdb_list)
-
-
-
 
 
 if __name__ == "__main__":

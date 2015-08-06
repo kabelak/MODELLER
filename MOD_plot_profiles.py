@@ -31,14 +31,14 @@ def get_profile(profile_file, seq):
     return vals
 
 def main(): # put in alignf, templatef, modelf
-    alignf = 'CYP2J2_pir_1PO5.ali'
-    templatef = '1PO5.profile'
-    modelf = 'B99990001.profile'
+    alignf = 'CYP2J2_pir_1suo.ali'
+    templatef = '1suo.profile'
+    modelf = 'B99990001_1suo.profile'
 
     e = modeller.environ()
     a = modeller.alignment(e, file=alignf)
 
-    template = get_profile(templatef, a['1PO5']) # change 1PO5 to required name
+    template = get_profile(templatef, a['1suo'])  # change 1PO5 to required name
     model = get_profile(modelf, a['P51589']) # change P51589 to required name
 
     # Plot the template and model profiles in the same plot for comparison:

@@ -7,12 +7,12 @@ import xlrd
 def main(xlfile):
     wb = xlrd.open_workbook(xlfile)
     # print wb.sheet_names()
-    ws1 = wb.sheet_by_name('Sheet1')
+    ws1 = wb.sheet_by_name('dihedrals2')
     num_rows = ws1.nrows - 1
-    #num_cells = ws1.ncols - 1
-    curr_row = - 1
+    # num_cells = ws1.ncols - 1
+    curr_row = -1
 
-    #atoms = {}
+    atoms = {}
     atomtype = {}
     i = 0
     while curr_row < num_rows:
@@ -22,15 +22,21 @@ def main(xlfile):
         #curr_cell = - 1
         #atoms[int(ws1.cell_value(curr_row,0))] = str(ws1.cell_value(curr_row,1))
 
-        print(str(ws1.cell_value(curr_row, 1)) + "\t" + str("h" + ws1.cell_value(curr_row, 5)).upper() + "\t" + str(
-            ws1.cell_value(curr_row, 8)) + "\t" + str(i))
+        print(" " + str(ws1.cell_value(curr_row, 0)) + "\t" + str(ws1.cell_value(curr_row, 1)) + " \t" + str(
+            ws1.cell_value(curr_row, 2)) + "\t" + str(ws1.cell_value(curr_row, 3)) + "  " + str(
+            ws1.cell_value(curr_row, 4))[0] + "  " + str(ws1.cell_value(curr_row, 5)) + "  " + str(
+            ws1.cell_value(curr_row, 6)) + "  " + str(ws1.cell_value(curr_row, 7)) + "  " + str(
+            ws1.cell_value(curr_row, 8)) + "  " + str(ws1.cell_value(curr_row, 9)) + "  " + str(
+            ws1.cell_value(curr_row, 10)) + " ; From Plamen")
+
         i += 1
-        trial = str("h" + ws1.cell_value(curr_row, 5)).upper()
+        '''
+        trial = str(ws1.cell_value(curr_row, 5)).upper()
         atomtype[trial] = 1
 
     for key in atomtype.keys():
         print(key)
-    '''
+
         while curr_cell < num_cells:
             curr_cell += 1
             cell_value = ws1.cell_value(curr_row, 1)

@@ -52,6 +52,9 @@ def ModBuildProf(inputalign):
     outaliname = str(fname.group(1)) + '_profile.ali'
     aln.write(file=outaliname, alignment_format='PIR')
 
+    # -- Next run MOD_profile_parser.py to display only result lines without alignment
+
+
 def main(file):
     ModBuildProf(file)
 

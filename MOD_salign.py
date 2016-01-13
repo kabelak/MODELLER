@@ -1,6 +1,7 @@
 __author__ = 'Kavin'
-__usage__ = 'python MOD_salign.py pdb+chains; Ensure the script is modified with the correct alignment file ' \
-            '(See ModSalignMult)'
+__usage__ = 'python MOD_salign.py pdb+chains; ' \
+            'Ensure the script is modified with the correct pir sequence file ' \
+            'as well as the align_codes (See ModSalignMult and ModModelCreate module below)'
 
 import sys
 from modeller import *
@@ -64,7 +65,7 @@ def ModSalignMult(salignf):
     aln_block = len(aln)
 
     # Read aligned sequence(s):
-    aln.append(file='../Sequences/CYP2J2_pir_trim.txt', align_codes='CYP2J2')
+    aln.append(file='../Sequences/CYP2E1_pir.txt', align_codes='CYP2E1')
 
     # Structure sensitive variable gap penalty sequence-sequence alignment:
     aln.salign(output='', max_gap_length=20,
@@ -89,12 +90,12 @@ def ModModelCreate(salign_multf, pdblist):
     # for both sequence and structure
     env.io.hetatm = True
     a = automodel(env, alnfile=salign_multf,
-                  knowns=pdblist, sequence='CYP2J2',
+                  knowns=pdblist, sequence='CYP2E1',
                   assess_methods=(assess.DOPE,
-                                  soap_protein_od.Scorer(),
+                                  # soap_protein_od.Scorer(),
                                   assess.GA341))
     a.starting_model = 1
-    a.ending_model = 10
+    a.ending_model = 5
     a.make()
 
 

@@ -7,7 +7,7 @@ import xlrd
 def main(xlfile):
     wb = xlrd.open_workbook(xlfile)
     # print wb.sheet_names()
-    ws1 = wb.sheet_by_name('dihedrals2')
+    ws1 = wb.sheet_by_name('Sheet2')
     num_rows = ws1.nrows - 1
     # num_cells = ws1.ncols - 1
     curr_row = -1
@@ -22,12 +22,13 @@ def main(xlfile):
         #curr_cell = - 1
         #atoms[int(ws1.cell_value(curr_row,0))] = str(ws1.cell_value(curr_row,1))
 
-        print(" " + str(ws1.cell_value(curr_row, 0)) + "\t" + str(ws1.cell_value(curr_row, 1)) + " \t" + str(
-            ws1.cell_value(curr_row, 2)) + "\t" + str(ws1.cell_value(curr_row, 3)) + "  " + str(
-            ws1.cell_value(curr_row, 4))[0] + "  " + str(ws1.cell_value(curr_row, 5)) + "  " + str(
-            ws1.cell_value(curr_row, 6)) + "  " + str(ws1.cell_value(curr_row, 7)) + "  " + str(
-            ws1.cell_value(curr_row, 8)) + "  " + str(ws1.cell_value(curr_row, 9)) + "  " + str(
-            ws1.cell_value(curr_row, 10)) + " ; From Plamen")
+        print(" " + str(int(ws1.cell_value(curr_row, 0))) + "\t" + str(
+            ws1.cell_value(curr_row, 1)) + " \t" + "{0:.3f}".format(
+            ws1.cell_value(curr_row, 2)) + "\t" + "{0:.3f}".format(
+            ws1.cell_value(curr_row, 3)) + "  " + "{0:.3f}".format(
+            ws1.cell_value(curr_row, 4)) + "  " + str(ws1.cell_value(curr_row, 5)) + "  " + str(
+            ws1.cell_value(curr_row, 6))[0] + "  " + str(ws1.cell_value(curr_row, 7)) + "  " + "{0:.4f}".format(
+            ws1.cell_value(curr_row, 8)))
 
         i += 1
         '''

@@ -7,7 +7,7 @@ import xlrd
 def main(xlfile):
     wb = xlrd.open_workbook(xlfile)
     # print wb.sheet_names()
-    ws1 = wb.sheet_by_name('Sheet2')
+    ws1 = wb.sheet_by_name('Sheet1')
     num_rows = ws1.nrows - 1
     # num_cells = ws1.ncols - 1
     curr_row = -1

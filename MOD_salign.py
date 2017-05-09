@@ -65,7 +65,7 @@ def ModSalignMult(salignf):
     aln_block = len(aln)
 
     # Read aligned sequence(s):
-    aln.append(file='../Sequences/CYP2E1_pir.txt', align_codes='CYP2E1')
+    aln.append(file='CYP2J2_pir.txt', align_codes='P51589')
 
     # Structure sensitive variable gap penalty sequence-sequence alignment:
     aln.salign(output='', max_gap_length=20,
@@ -90,7 +90,7 @@ def ModModelCreate(salign_multf, pdblist):
     # for both sequence and structure
     env.io.hetatm = True
     a = automodel(env, alnfile=salign_multf,
-                  knowns=pdblist, sequence='CYP2E1',
+                  knowns=pdblist, sequence='P51589',
                   assess_methods=(assess.DOPE,
                                   # soap_protein_od.Scorer(),
                                   assess.GA341))
@@ -103,7 +103,7 @@ def main():
     try:
         file_input = sys.argv[1:]
     except IndexError:
-        print __usage__
+        print(__usage__)
         sys.exit()
 
     # Extract PDB id and Chain information

@@ -34,7 +34,7 @@ def main(xlfile):
     curr_row = 1
     while curr_row < ws1.nrows:
         znval = atbatoms[ws1.cell_value(curr_row, 1)]
-        print(" " + str(int(ws1.cell_value(curr_row, 0) - 1)) + "\t" + str(
+        print(" " + str(int(ws1.cell_value(curr_row, 0))) + "\t" + str(
             ws1.cell_value(curr_row, 1)) + " \t" + "{0:.3f}".format(
             ws1.cell_value(curr_row, 2)) + "\t" + "{0:.3f}".format(
             ws1.cell_value(curr_row, 3)) + "  " + "{0:.3f}".format(

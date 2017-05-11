@@ -35,10 +35,10 @@ def main(hbondsheet):
     #   Create a workbook and set row 1
     if os.path.exists(fname2):
         wb_to = load_workbook(fname2)
-        ws_to = wb_to.create_sheet(title=str(fname.group(1)) + str(fname.group(2)))
+        ws_to = wb_to.create_sheet(title=(str(fname.group(1)) + str(fname.group(2)))[-30:])
     else:
         wb_to = Workbook()
-        ws_to = wb_to.create_sheet(title=str(fname.group(1)) + str(fname.group(2)))
+        ws_to = wb_to.create_sheet(title=(str(fname.group(1)) + str(fname.group(2)))[-30:])
     _row = 1
 
     #   Create data structure to count to add the fractions

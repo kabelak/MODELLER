@@ -20,11 +20,15 @@ def check_range(arg):  # Function to ensure correct range of IRE Length is input
 
 def namerows(_sheet):
     #   Create row headings
+    _sheet.cell(row=1, column=1).value = "Pose"
+    _sheet.cell(row=2, column=1).value = "Repeat"
     _sheet.cell(row=3, column=1).value = "Omega 6"
     _sheet.cell(row=4, column=1).value = "Omega 9"
     _sheet.cell(row=5, column=1).value = "Omega 12"
     _sheet.cell(row=6, column=1).value = "Omega 15"
     _sheet.cell(row=7, column=1).value = "Carbon 19"
+    _sheet.cell(row=8, column=1).value = "Carboxylic head"
+
     return _sheet
 
 
@@ -61,8 +65,8 @@ def main(argv):
                     #         '\t< cutoff :\t', relevant_frames, '\n',
                     #        '\t% < cutoff:\t', round(relevant_frames / total_frames * 100, 2))
 
-    # A bit of naming maintenace, to be used throughout
-    fname = re.search('(Mut_quadruple).*/Distance_FEto(.*)\.(\d)\.(.*)\.agr', os.path.abspath(args.file))
+    # A bit of naming maintenance, to be used throughout
+    fname = re.search('(Mut_R111A_R117A).*/Distance_FEto(.*)\.(\d)\.(.*)\.agr', os.path.abspath(args.file))
     fname2 = str(fname.group(1)) + '_hemedistance_analysed.xlsx'
 
     print(fname.group(1), fname.group(2), fname.group(3), fname.group(4))
@@ -109,7 +113,8 @@ def main(argv):
         ws.cell(row=6, column=_col).value = round(relevant_frames / total_frames * 100, 2)
     elif bond == "C19":
         ws.cell(row=7, column=_col).value = round(relevant_frames / total_frames * 100, 2)
-
+    elif bond == "CO2":
+        ws.cell(row=8, column=_col).value = round(relevant_frames / total_frames * 100, 2)
     # Save and exit, clearing the 'Sheet' worksheet
     wb.save(fname2)
     wb.close()

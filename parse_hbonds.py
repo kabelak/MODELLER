@@ -88,6 +88,7 @@ def main(hbondsheet):
         wb_del.save(fname2)
 
     wb_del.close()
+    print("created " + fname2)
 
 if __name__ == "__main__":
     main(sys.argv[1])

@@ -37,7 +37,7 @@ def main(argv):
 
     # A bit of naming maintenance, to be used throughout
     fname = re.search('(Mut_\w*|Docked_Sims).*/Distance_FEto(.*)\.(\d)\.(.*)\.agr', os.path.abspath(args.file))
-    fname2 = str(fname.group(1)) + '_hemedistance_stats.xlsx'
+    fname2 = str(fname.group(1)) + '_hemedistance_stats_post100ns_minmed.xlsx'
 
     # Some output to stdin to show progress when looping
     # Also intialise variables to be used later
@@ -49,27 +49,36 @@ def main(argv):
     #   Create a workbook and set row 1
     if os.path.exists(fname2):
         wb = load_workbook(fname2)
-        if not 'Stats' in wb.sheetnames:
-            ws = wb.create_sheet(title='Stats')
+        if not 'MinMed' in wb.sheetnames:
+            ws = wb.create_sheet(title='MinMed')
             ws = namerows(ws)
             _col = 2
         else:
-            ws = wb['Stats']
+            ws = wb['MinMed']
             # _row = ws.max_rows
             if bond == "Omega6":
                 _col = ws.max_column
             else:
-                _col = ws.max_column - 3
+                _col = ws.max_column - 1
 
     else:
         wb = Workbook()
-        ws = wb.create_sheet(title='Stats')
+        ws = wb.create_sheet(title='MinMed')
         ws = namerows(ws)
         _col = 2
 
     # Pass file to R and process as table
+    # Here, we need to skip the first 50/100ns if we want to allow full equilibration
+    # For WT, skip 5000+8 lines, for mutant skip 10000+8 lines
+    _skip = 0
+    if "Mut" in fname2:
+        _skip = 10008
+    else:
+        _skip = 5008
+
     r.assign('dataf', os.path.abspath(args.file))
-    r('dc <- read.table(dataf, skip=8, col.names = c("Time", "Distance"))')
+    r.assign('skippy', _skip)
+    r('dc <- read.table(dataf, skip=skippy, col.names = c("Time", "Distance"))')
     r('d <- dc[,"Distance"]')
 
     # Logics to ensure new file is correctly written, or existing file
@@ -83,46 +92,26 @@ def main(argv):
         _col += 1
 
     # Parse data and populate cells with stats
+    _row = 0
     if bond == "Omega6":
         ws.cell(row=2, column=_col + 1).value = str(repeat)
-        ws.cell(row=2, column=_col + 2).value = str(repeat)
-        ws.cell(row=2, column=_col + 3).value = str(repeat)
         ws.cell(row=1, column=_col + 1).value = pose
-        ws.cell(row=1, column=_col + 2).value = pose
-        ws.cell(row=1, column=_col + 3).value = pose
         ws.cell(row=3, column=_col).value = 'Min'
-        ws.cell(row=3, column=_col + 1).value = 'Max'
-        ws.cell(row=3, column=_col + 2).value = 'Mean'
-        ws.cell(row=3, column=_col + 3).value = 'Median'
-        ws.cell(row=4, column=_col).value = r('min(d)')[0]
-        ws.cell(row=4, column=_col + 1).value = r('max(d)')[0]
-        ws.cell(row=4, column=_col + 2).value = r('mean(d)')[0]
-        ws.cell(row=4, column=_col + 3).value = r('median(d)')[0]
+        ws.cell(row=3, column=_col + 1).value = 'Median'
+        _row = 4
     elif bond == "Omega9":
-        ws.cell(row=5, column=_col).value = r('min(d)')[0]
-        ws.cell(row=5, column=_col + 1).value = r('max(d)')[0]
-        ws.cell(row=5, column=_col + 2).value = r('mean(d)')[0]
-        ws.cell(row=5, column=_col + 3).value = r('median(d)')[0]
+        _row = 5
     elif bond == "Omega12":
-        ws.cell(row=6, column=_col).value = r('min(d)')[0]
-        ws.cell(row=6, column=_col + 1).value = r('max(d)')[0]
-        ws.cell(row=6, column=_col + 2).value = r('mean(d)')[0]
-        ws.cell(row=6, column=_col + 3).value = r('median(d)')[0]
+        _row = 6
     elif bond == "Omega15":
-        ws.cell(row=7, column=_col).value = r('min(d)')[0]
-        ws.cell(row=7, column=_col + 1).value = r('max(d)')[0]
-        ws.cell(row=7, column=_col + 2).value = r('mean(d)')[0]
-        ws.cell(row=7, column=_col + 3).value = r('median(d)')[0]
+        _row = 7
     elif bond == "C19":
-        ws.cell(row=8, column=_col).value = r('min(d)')[0]
-        ws.cell(row=8, column=_col + 1).value = r('max(d)')[0]
-        ws.cell(row=8, column=_col + 2).value = r('mean(d)')[0]
-        ws.cell(row=8, column=_col + 3).value = r('median(d)')[0]
+        _row = 8
     elif bond == "CO2":
-        ws.cell(row=9, column=_col).value = r('min(d)')[0]
-        ws.cell(row=9, column=_col + 1).value = r('max(d)')[0]
-        ws.cell(row=9, column=_col + 2).value = r('mean(d)')[0]
-        ws.cell(row=9, column=_col + 3).value = r('median(d)')[0]
+        _row = 9
+
+    ws.cell(row=_row, column=_col).value = r('min(d)')[0]
+    ws.cell(row=_row, column=_col + 1).value = r('median(d)')[0]
 
     # Save and exit, clearing the 'Sheet' worksheet
     wb.save(fname2)
@@ -139,4 +128,3 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv)
-

@@ -66,7 +66,7 @@ def main(argv):
                     #        '\t% < cutoff:\t', round(relevant_frames / total_frames * 100, 2))
 
     # A bit of naming maintenance, to be used throughout
-    fname = re.search('(Mut_R111A_R117A).*/Distance_FEto(.*)\.(\d)\.(.*)\.agr', os.path.abspath(args.file))
+    fname = re.search('(Mut_\w*|Docked_Sims).*/Distance_FEto(.*)\.(\d)\.(.*)\.agr', os.path.abspath(args.file))
     fname2 = str(fname.group(1)) + '_hemedistance_analysed.xlsx'
 
     print(fname.group(1), fname.group(2), fname.group(3), fname.group(4))

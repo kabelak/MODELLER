@@ -2,7 +2,7 @@ __author__ = 'Kavin'
 __usage__ = 'python3 parse_rmsf.py RMSF_FILE <min_rmsf_value_to_pickup> ' \
             'Remember that the residue number shown will be the "PDB" number ' \
             'and NOT the "real" residue number shown on the RMSF plot' \
-            'If its not wokring, try to include: ' \
+            'If its not working, try to include: ' \
             ' export PYTHONPATH=$PYTHONPATH:/usr/lib/modeller9.14/lib/x86_64-intel8' \
             ' export PYTHONPATH=$PYTHONPATH:/usr/lib/modeller9.14/modlib/'
 
@@ -13,19 +13,21 @@ import re
 
 
 def parse_rmsf(filename, rmsf):
-    result = ""
+    result = "select :"
     for line in open(filename).readlines():
         # if (int(line.split(' ')[1][0]) > 2):
         # print(line.split(' ')[1])
         stuff = re.search('\s*(\d+)\..*\s*(\d+\.\d\d)', line)
-        print(stuff)
+        # print(stuff)
         # print(float(stuff.group(2)))
         if stuff and float(stuff.group(2)) > float(rmsf):
             # print('%s is %s' % (stuff.group(1), stuff.group(2)))
-            residue = str(int(stuff.group(1)) - 43)
+            # residue = str(int(stuff.group(1)) - 43)
+            residue = str(int(stuff.group(1)))
             result += residue
             result += ','
     print(result[0:-1])
+    #print(result)
 
 
 '''

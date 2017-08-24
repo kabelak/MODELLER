@@ -29,9 +29,6 @@ for _sim in ["/Docked_Sims", "/Mut_R111A", "/Mut_R117A", "/Mut_R111A_R117A", "/M
                 _directory = "/State_%d/007.cpptraj/Distance_FEto%s.%d.old.agr" % (i, o, i)
                 _file = _root + _sim + _directory
                 _skip = skipvalue(_file)
-
-                print(os.path.abspath(_file))
-
                 r.assign('dataf', os.path.abspath(_file))
                 r.assign('skippy', _skip)
                 r('dc <- read.table(dataf, skip=skippy, col.names = c("Time", "Distance"))')
@@ -47,7 +44,6 @@ for _sim in ["/Docked_Sims", "/Mut_R111A", "/Mut_R117A", "/Mut_R111A_R117A", "/M
                 r.assign('dataf', os.path.abspath(_file))
                 r.assign('skippy', _skip)
                 r('dc <- read.table(dataf, skip=skippy, col.names = c("Time", "Distance"))')
-
                 if type == 1:
                     r('d <- rbind(d, dc[,"Distance"])')
                 else:
